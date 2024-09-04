@@ -1,13 +1,25 @@
 import numpy as np
-import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt
 from matplotlib.animation import FuncAnimation
 
 grid_size = (11, 11)
 grid = np.zeros(grid_size)
-grid[5, 5] = 500
 
-fig = plt.figure(facecolor="b")
+fig = plt.figure(facecolor="g")
 ax = plt.axes(xlim=(0, 10), ylim=(0, 10))
+
+
+def handleEvent(event):
+    global previous_grid
+    x_index = round(event.ydata)
+    y_index = round(event.xdata)
+    if event.button == 1 and 0 <= x_index < grid_size[1] and 0 <= y_index < grid_size[0]:
+        print(x_index, y_index)
+        grid[x_index, y_index] = 500
+        previous_grid = np.copy(grid)
+
+
+fig.canvas.mpl_connect('button_press_event', handleEvent)
 
 im = ax.imshow(grid, cmap='hot', interpolation='none', vmin=0, vmax=255)
 ax.grid(color='white', linestyle='-', linewidth=0.5)
@@ -33,7 +45,6 @@ def update_grid(frame):
 
     for i in range(1, grid_size[0] - 1):
         for j in range(1, grid_size[1] - 1):
-
             central = previous_grid[i, j]
             left = previous_grid[i, j - 1]
             right = previous_grid[i, j + 1]
