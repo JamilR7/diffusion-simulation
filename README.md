@@ -1,4 +1,4 @@
-Basic implementation of diffusion, animated in matplotlib.
+Animated in matplotlib.
 
 Advection to be added in future update.
 
